@@ -15,7 +15,7 @@ class PluginRoutes
       res << "end\n"
 
     elsif env == "admin" # admin
-      res << "scope '#{PluginRoutes.system_info['admin_path_name']}', as: 'admin' do \n"
+      res << "scope 'admin', as: 'admin' do \n"
       res << "namespace :plugins do \n"
       plugins.each do |plugin|
         res << "namespace '#{plugin["key"]}' do \n"
@@ -45,7 +45,7 @@ class PluginRoutes
       res << "end\n"
 
     elsif env == "admin" # admin
-      res << "scope '#{PluginRoutes.system_info['admin_path_name']}', as: 'admin' do \n"
+      res << "scope 'admin', as: 'admin' do \n"
       res << "namespace :themes do \n"
       plugins.each do |plugin|
         res << "namespace '#{plugin["key"]}' do \n"
