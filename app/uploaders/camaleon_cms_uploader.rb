@@ -3,10 +3,14 @@ class CamaleonCmsUploader
   # root_folder, current_site, service = 'Local', thumb
   def initialize(args = {})
     @current_site = args[:current_site]
-    @root_folder = args[:root_folder] || @current_site.upload_directory
-    @service = args[:service] || 'Local'
     t_w, t_h = @current_site.get_option('filesystem_thumb_size', '100x100').split('x')
     @thumb = args[:thumb] || {w: t_w, h: t_h}
+    @args = args
+    after_initialize
+  end
+
+  def after_initialize
+
   end
 
   # return all files structure, within folder prefix
@@ -74,12 +78,35 @@ class CamaleonCmsUploader
   def self.get_file_format(path)
     ext = File.extname(path).sub(".", "").downcase
     format = "unknown"
-    format = "image" if "jpg,jpeg,png,gif,bmp,ico".split(",").include?(ext)
-    format = "video" if "flv,webm,wmv,avi,swf,mp4,mov,mpg".split(",").include?(ext)
-    format = "audio" if "mp3,ogg".split(",").include?(ext)
-    format = "document" if "pdf,xls,xlsx,doc,docx,ppt,pptx,html,txt,xml,json".split(",").include?(ext)
-    format = "compress" if "zip,7z,rar,tar,bz2,gz,rar2".split(",").include?(ext)
+    format = "image" if get_file_format_extensions('image').split(",").include?(ext)
+    format = "video" if get_file_format_extensions('video').split(",").include?(ext)
+    format = "audio" if get_file_format_extensions('audio').split(",").include?(ext)
+    format = "document" if get_file_format_extensions('document').split(",").include?(ext)
+    format = "compress" if get_file_format_extensions('compress').split(",").include?(ext)
     format
+  end
+
+  # return the files extensión for each format
+  # support for multiples formats, sample: image,audio
+  def self.get_file_format_extensions(format)
+    res = []
+    format.downcase.gsub(' ', '').split(',').each do |f|
+      res << case f
+                when 'image', 'images'
+                  "jpg,jpeg,png,gif,bmp,ico"
+                when 'video', 'videos'
+                  "flv,webm,wmv,avi,swf,mp4,mov,mpg"
+                when 'audio'
+                  "mp3,ogg"
+                when 'document', 'documents'
+                  "pdf,xls,xlsx,doc,docx,ppt,pptx,html,txt,xml,json"
+                when 'compress'
+                  "zip,7z,rar,tar,bz2,gz,rar2"
+                else
+                  ''
+              end
+    end
+    res.join(',')
   end
 
   # verify permitted formats (return boolean true | false)
@@ -88,8 +115,8 @@ class CamaleonCmsUploader
   # sample: validate_file_format('/var/www/myfile.xls', 'image,audio,docx,xls') => return true if the file extension is in formats
   def self.validate_file_format(key, valid_formats = "*")
     return true if valid_formats == "*" || !valid_formats.present?
-    valid_formats = valid_formats.gsub(' ', '').downcase.split(',')
-    valid_formats.include?(File.extname(key).sub(".", "").downcase) || valid_formats.include?(get_file_format(key))
+    valid_formats = valid_formats.gsub(' ', '').downcase.split(',') + get_file_format_extensions(valid_formats).split(',')
+    valid_formats.include?(File.extname(key).sub(".", "").downcase)
   end
 
 

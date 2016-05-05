@@ -333,6 +333,7 @@ es:
         author: "Nombre de Autor"
         seo_setting: "Posicionamiento Web."
         email_settings: "Configuración de Correo (SMTP)"
+        media_settings: "Configuración de Multimedia"
         filesystem_type: "Tipo de sistema de ficheros"
         filesystem_max_file_size: "Tamaño Max. a Subir [MB]"
         filesystem_thumb_size: "Tamaño de miniaturas [100x100]"
@@ -340,6 +341,7 @@ es:
         filesystem_s3_secret_key: "AWS S3 Contraseña de acceso"
         filesystem_s3_bucket_name: "AWS S3 nombre del bucket"
         filesystem_cdn: "CDN url"
+        filesystem_s3_cloudfront: 'Cloudfront URL'
         security:
           captcha_user_register: "¿Activar captcha en el registro de usuarios?"
           need_validate_email: "¿Es necesario validar el email?"
@@ -616,6 +618,23 @@ es:
           error_created: 'No se ha creado el Widget.'
           error_updated: 'No se ha actualizado el Widget.'
           not_registered_widgets: 'No existen widgets registrados'
+      appearances:
+        nav_menus:
+          menu_items:
+            edit_menu_item: 'Editar Menú Item'
+            edit_custom_settings: 'Editar Configuración'
+          update:
+            updated_menu: 'El menú fué actualizado'
+          create:
+            created_menu: 'El menú fué creado'
+          destroy:
+              deleted_menu: 'El menú fué eliminado'
+          menu_options:
+            edit_menu: 'Editar Menú'
+            delete_menu: 'Eliminar Menú'
+            create_menu: 'Crear Menú'
+          external_menu:
+            root_alert_info: 'Tu puedes usar <b>root_url</b> para url de inicio'
 
     models:
       site:
